@@ -1,0 +1,30 @@
+extends layout
+mixin message(name,articles)
+    h1.greeting
+        span=name
+    if(articles)
+        table.article
+            each item in articles
+                tr
+                    td  
+                        table.posts
+                            tr
+                                td.hd
+                                    span= item.HEADING
+                            tr
+                                td.cont
+                                    span= item.status
+                        
+                        
+block content
+    table 
+        tr
+            td.profileimage
+                img(src="img/usericon.png")
+                .Dashboard
+                    .user
+                        +message(name,articles)
+                
+                    
+                
+    
