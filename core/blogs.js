@@ -18,6 +18,20 @@ Blog.prototype={
         else{
             callback(null);
         }
+    },
+    allblogs: function(callback){
+        
+            let sql=`SELECT * FROM blogs`
+            pool.query(sql,function(err,result){
+                if(err) throw err
+                if(result.length){
+                    callback(result);
+                }else{
+                    callback(null);
+                }
+            });
+        
+        
     }
 }
 module.exports= Blog;

@@ -132,7 +132,39 @@ p
  padding: 1em;
 
 }
+.article
+{
+ color: #222;
+ background-color: rgb(245,255,245);
+ border: 1px solid rgb(210,231,210);
+ padding: 1em;
+ width: 1000px;
+
+}
+.article tr td {
+    border: 1px solid black;
+}
+.posts tr td {
+    border: none;
+}
+.hd{
+    font-weight: bold;
+    font-size: 50px;
+    color: purple;
+}
+.blogwriter{
+    font-size: 15px;
+    float: right;
+    color: palevioletred;
+}
+.cont{
+    font-size: 30px;
+    color: rgb(112,172,16);
+}
 .greeting span
 {
     color: rgb(112,172,16);
+}
+.img{
+    float:right;
 }

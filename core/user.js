@@ -45,6 +45,17 @@ User.prototype= {
             }
             callback(null);
         });
+    },
+    updatestatus: function(heading,status,userdata,callback){
+        let sql=`INSERT INTO blogs(id,HEADING,status,username) VALUES (?,?,?,?);`;
+        let arr=[userdata.id,heading,status,userdata.fullname];
+        pool.query(sql,arr,function(err,result){
+            if(err) throw err
+            else{
+                console.log("update success!")
+                callback("success");
+            }
+        });
     }
 }
 module.exports= User;

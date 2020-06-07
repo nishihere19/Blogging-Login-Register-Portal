@@ -1,10 +1,14 @@
 const express = require('express');
 const User = require('../core/user');
+const Blog = require('../core/blogs');
 const router = express.Router();
 
 // create an object from the class User in the file core/user.js
 const user = new User();
-
+const blogs = new Blog();
+var userdata;
+var date = new Date();
+var time = date.getTime();
 // Get the index page
 router.get('/', (req, res, next) => {
     let user = req.session.user;
@@ -16,15 +20,40 @@ router.get('/', (req, res, next) => {
     // IF not we just send the index page.
     res.render('index', {title:"My application"});
 })
-
+router.get('/profile', (req, res, next) => {
+    let user = req.session.user;
+    // Check if the session is exist
+    if(req.session.user) {
+        // destroy the session and redirect the user to the index page.
+            //console.log(user.fullname);
+            
+            blogs.myblogs(user.id,function(result){
+            req.result= JSON.stringify(result);
+            console.log("articles:", result);
+            res.render('profile',{name:user.fullname, articles:result});
+            return;
+            });
+            return;
+            
+           
+    
+    }
+    res.redirect('/');
+})
 // Get home page
 router.get('/home', (req, res, next) => {
     let user = req.session.user;
+    
 
     if(user) {
-        res.render('home', {opp:req.session.opp, name:user.fullname});
+        blogs.allblogs(function(result){
+            req.result= JSON.stringify(result);
+            console.log("articles:", result);
+        res.render('home', {opp:req.session.opp, name:user.fullname,articles:result});
         return;
-    }
+    });
+    return;
+}
     res.redirect('/');
 });
 
@@ -33,6 +62,8 @@ router.post('/login', (req, res, next) => {
     // The data sent from the user are stored in the req.body object.
     // call our login function and it will return the result(the user data).
     user.login(req.body.username, req.body.password, function(result) {
+        userdata=result;
+        //console.log(userdata);
         if(result) {
             // Store the user data in a session.
             req.session.user = result;
@@ -46,7 +77,18 @@ router.post('/login', (req, res, next) => {
     })
 
 });
+router.post('/status',(req,res,next) =>{
+    //console.log(req.session.user);
+    user.updatestatus(req.body.Heading,req.body.Status,req.session.user,function(check){
+        if(check){
+            console.log("success");
+            console.log("date:", date,"time: ", time);
+        }else{
+            console.log("failed");
+        }
+    })
 
+})
 
 // Post register data
 router.post('/register', (req, res, next) => {
@@ -81,9 +123,10 @@ router.get('/loggout', (req, res, next) => {
     if(req.session.user) {
         // destroy the session and redirect the user to the index page.
         req.session.destroy(function() {
-            res.redirect('/');
+            res.redirect('/home');
         });
     }
+    res.redirect('/');
 });
 
 module.exports = router;

@@ -9,12 +9,16 @@ mixin message(name,articles)
                     td  
                         table.posts
                             tr
-                                td.hd
-                                    span= item.HEADING
+                                td
+                                    span.hd= item.HEADING
+                                    
                             tr
-                                td.cont
-                                    span= item.status
-                        
+                                td
+                                    span.cont= item.status
+                                    span.blogwriter=item.username
+append links
+    li(style="float:right;")
+        a(href="/loggout") Loggout                      
                         
 block content
     table 
