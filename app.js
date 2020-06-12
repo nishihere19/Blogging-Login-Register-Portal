@@ -8,6 +8,7 @@ const app=express();
 app.use(express.urlencoded({extended: false}));
 
 
+//app.use(express.static(path.join(__dirname,'public')));
 app.use(express.static(path.join(__dirname,'public')));
 
 app.set('views',path.join(__dirname,'views'));
@@ -24,6 +25,7 @@ app.use(session({
 }));
 
 app.use('/',pageRouter);
+app.use('/userprofile',pageRouter);
 app.use((req,res,next)=>{
     var err=new Error("Oops, the page you requested is not found!");
     err.status = 404;

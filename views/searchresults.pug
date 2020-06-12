@@ -1,14 +1,5 @@
 extends layout
-mixin message(name,articles,followers,following)
-    table.follower
-        tr
-            td 
-                span=followers 
-                |  Followers 
-                span=following 
-                |  Following
-    h1.greeting
-        span=name
+mixin message(articles)
     if(articles)
         table.article
             each item in articles
@@ -17,13 +8,13 @@ mixin message(name,articles,followers,following)
                         table.posts
                             tr
                                 td
-                                    span.hd= item.HEADING
+                                    span.hd= item.fullname
                                     
                             tr
                                 td
-                                    div
-                                        contentEditable
-                                            span.cont= item.status
+                                    span.cont= item.username
+                                a(href= "userprofile/"+item.id class="val") #{item.username}
+                                    p(style="font-size: 15px;") (view profile) 
                                     
 append links
     li(style="float:right;")
@@ -33,10 +24,9 @@ block content
     table 
         tr
             td.profileimage
-                img(src="img/usericon.png") 
                 .Dashboard
                     .user
-                        +message(name,articles,followers,following)
+                        +message(articles)
                 
                     
                 

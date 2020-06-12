@@ -15,8 +15,9 @@ mixin message(opp,name,articles)
                                         
                                 tr
                                     td
-                                        span.cont= item.status
-                                        span.blogwriter= "("+item.username+")"
+                                        span.cont= item.status   
+                                    a(href= "userprofile/"+item.id class="val") #{item.username}
+                                        p(style="font-size: 15px;") (view profile) 
     else
         h1.greeting Welcome 
             span=name
@@ -28,15 +29,21 @@ mixin message(opp,name,articles)
                         td  
                             table.posts
                                 tr
-                                    td.hd
-                                        span= item.HEADING
+                                    td
+                                        span.hd= item.HEADING
+                                        
                                 tr
-                                    td.cont
-                                        span= item.status
+                                    td
+                                        span.cont= item.status    
+                                    a(href= "userprofile/"+item.id class="val") #{item.username} 
+                                        
 append links
+    
     li(style="float:right;")
-        a(href="/profile") Profile
-        a(href="/loggout") Loggout
+        form(method="post" action="/search")
+            input(type="search", name="searchbar" placeholder="Search by username/full name").search
+            a(href="/profile") Profile
+            a(href="/loggout") Logout
         
 
 block content
@@ -44,9 +51,11 @@ block content
         tr
             td
             form(method="post" action="/status")
-                input(type="text" name="Heading" placeholder="Heading" ).heading
-                input(type="text" name="Status" placeholder="Write what's on your mind!!" ).status
-                input(type="submit" value="Post" )
+                div
+                    contenteditable
+                        input(type="text" name="Heading" placeholder="Heading" ).heading
+                        input(type="text" name="Status" placeholder="Write what's on your mind!!" ).status
+                input(type="submit" value="Post")
         tr
             td.Dashboard
             .user

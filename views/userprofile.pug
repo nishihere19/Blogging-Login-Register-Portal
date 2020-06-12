@@ -1,12 +1,5 @@
 extends layout
-mixin message(name,articles,followers,following)
-    table.follower
-        tr
-            td 
-                span=followers 
-                |  Followers 
-                span=following 
-                |  Following
+mixin message(id,name,articles)
     h1.greeting
         span=name
     if(articles)
@@ -21,9 +14,7 @@ mixin message(name,articles,followers,following)
                                     
                             tr
                                 td
-                                    div
-                                        contentEditable
-                                            span.cont= item.status
+                                    span.cont= item.status
                                     
 append links
     li(style="float:right;")
@@ -33,10 +24,12 @@ block content
     table 
         tr
             td.profileimage
-                img(src="img/usericon.png") 
+                img(src="/img/usericon.png")
+                form(action="/follow/"+id method="post")
+                    input(type="submit" value= follow)
                 .Dashboard
                     .user
-                        +message(name,articles,followers,following)
+                        +message(id,name,articles)
                 
                     
                 

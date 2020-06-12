@@ -3,8 +3,6 @@ margin:0;}
 
 body{
     background-color: #F0F0F0;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-
 
 }
 .table, .table td, .table tr{
@@ -18,7 +16,7 @@ body{
   background-color: #fff;
 }
 nav{
-    background-color: rgb(208, 235, 243);
+    background-color: #fff;
     border: 1px solid #ccc;
     margin-bottom: 5px;
 }
@@ -66,15 +64,6 @@ input[type="text"], input[type="password"]
     background-color: #D5D5F5;
     border: 1px solid #ccc;
 }
-input[type="search"]
-{
-    padding: 8px 5px;
-    margin: 0 0 5px 5px;
-    min-width: 270px;
-    font-size: 1.05em;
-    background-color: #D5D5F5;
-    border: 1px solid #ccc;
-}
 input[type="submit"]
 {
     float: right;
@@ -94,10 +83,6 @@ input[type="submit"]:hover
     background-color: #0fa3dd;
     border-color: 1px solid #098ec2;
 }
-input[type="search"]:focus{
-    background-color: #fff;
-}
-
 .error
 {
     background-color: rgb(248,203,203);
@@ -142,7 +127,7 @@ p
 .greeting
 {
  color: #222;
- background-color: rgb(209, 248, 248);
+ background-color: rgb(245,255,245);
  border: 1px solid rgb(210,231,210);
  padding: 1em;
 
@@ -150,34 +135,22 @@ p
 .article
 {
  color: #222;
- background-color: rgb(154, 209, 209);
+ background-color: rgb(245,255,245);
  border: 1px solid rgb(210,231,210);
  padding: 1em;
- width: 1350px;
+ width: 1000px;
 
 }
-.article tr {
-    border: 1px solid paleturquoise;
-    background-color: rgb(184, 215, 233);
-}
-.article tr  :hover{
-    border: 1px solid rgb(88, 206, 206);
-    background-color: rgb(164, 205, 230);
+.article tr td {
+    border: 1px solid black;
 }
 .posts tr td {
     border: none;
-    width: 1350px;
 }
 .hd{
     font-weight: bold;
-    font-size: 35px;
-    color: rgb(88, 19, 128);
-  
-}
-.follower tr td{
-    background-color: rgb(144, 190, 219);
-    color: rgb(90, 7, 90);
-    font-weight: bolder;
+    font-size: 50px;
+    color: purple;
 }
 .blogwriter{
     font-size: 15px;
@@ -185,8 +158,8 @@ p
     color: palevioletred;
 }
 .cont{
-    font-size: 20px;
-    color: rgb(16, 102, 83);
+    font-size: 30px;
+    color: rgb(112,172,16);
 }
 .greeting span
 {
@@ -194,15 +167,4 @@ p
 }
 .img{
     float:right;
-}
-.article tr td a{
-    float: right;
-    font-size: 25px;
-    text-decoration: rgb(16, 102, 83);
-    
-
-}
-.search{
-    float: left;
-    height: 35px;
 }

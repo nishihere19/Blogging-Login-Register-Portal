@@ -7,8 +7,9 @@ const router = express.Router();
 const user = new User();
 const blogs = new Blog();
 var userdata;
-var date = new Date();
-var time = date.getTime();
+var date =new Date().toISOString()
+
+
 // Get the index page
 router.get('/', (req, res, next) => {
     let user = req.session.user;
@@ -21,16 +22,29 @@ router.get('/', (req, res, next) => {
     res.render('index', {title:"My application"});
 })
 router.get('/profile', (req, res, next) => {
-    let user = req.session.user;
+    let user1 = req.session.user;
     // Check if the session is exist
+    var followers,following;
+    user.followers(user1.id,function(result){
+        result=JSON.stringify(result);
+        console.log(result);
+        followers=result;
+    });
+    user.following(user1.id,function(result){
+        result=JSON.stringify(result);
+        console.log(result);
+        following=result;
+    });
+    
+
     if(req.session.user) {
         // destroy the session and redirect the user to the index page.
             //console.log(user.fullname);
             
-            blogs.myblogs(user.id,function(result){
+            blogs.myblogs(user1.id,function(result){
             req.result= JSON.stringify(result);
-            console.log("articles:", result);
-            res.render('profile',{name:user.fullname, articles:result});
+            //console.log("articles:", result);
+            res.render('profile',{name:user1.fullname, articles:result, followers:followers,following:following});
             return;
             });
             return;
@@ -48,7 +62,7 @@ router.get('/home', (req, res, next) => {
     if(user) {
         blogs.allblogs(function(result){
             req.result= JSON.stringify(result);
-            console.log("articles:", result);
+            //console.log("articles:", result);
         res.render('home', {opp:req.session.opp, name:user.fullname,articles:result});
         return;
     });
@@ -77,16 +91,65 @@ router.post('/login', (req, res, next) => {
     })
 
 });
+router.post('/search',(req,res,next)=>{
+    user.findsearch(req.body.searchbar, function(result){
+        if(result){
+        req.result=JSON.stringify(result);
+        console.log(result);
+        
+        res.render('searchresults',{articles: result});
+        return;
+        }
+        else{
+            res.send("NO SUCH USER");
+            return;
+        }        
+    });
+
+})
+router.post('/follow/:usersid',(req,res,next)=>{
+    console.log("follow");
+    console.log(req.params.usersid);
+    req.userid=req.params.usersid;
+    var userid=parseInt(req.userid);
+    user.find(userid,function(result){
+        //req.result=JSON.stringify(result);
+        //console.log(result);
+        user.follow(userid,req.session.user.id,function(result2){
+            console.log("worked",result2);
+            blogs.find(userid,function(result1){
+                blogs.myblogs(userid,function(result){
+                    req.result= JSON.stringify(result);
+                    //console.log("articles:", result);
+                    req.result1=JSON.stringify(result1);
+                    console.log(result1);
+                    res.render('userprofile',{id: userid, name:result1.fullname, articles:result , follow:result2});
+                    return;
+                    
+                });
+                return;
+            });
+    
+        })
+        
+        
+        return;
+    });
+})
 router.post('/status',(req,res,next) =>{
     //console.log(req.session.user);
+    //console.log(req.body.BOLD);
+   // console.log(req.body.ITALIC);
     user.updatestatus(req.body.Heading,req.body.Status,req.session.user,function(check){
         if(check){
             console.log("success");
-            console.log("date:", date,"time: ", time);
+           
         }else{
             console.log("failed");
+            
         }
     })
+    res.redirect('/home');
 
 })
 
@@ -123,9 +186,47 @@ router.get('/loggout', (req, res, next) => {
     if(req.session.user) {
         // destroy the session and redirect the user to the index page.
         req.session.destroy(function() {
-            res.redirect('/home');
+            
         });
     }
+    res.redirect('/');
+});
+router.get("/userprofile/:userid", (req, res, next) => {
+    var user1=req.session.user;
+    console.log(req.params.userid);
+    console.log("entered");
+    clickeduser=req.params.userid;
+    console.log("user:",clickeduser);
+    clickeduser=parseInt(clickeduser);
+    if(clickeduser==user1.id){
+        res.redirect("/profile");
+        return;
+    }
+    else{
+    var follow;
+    user.check(clickeduser,req.session.user.id,function(result3){
+        
+        follow=result3;
+    });
+    if(req.session.user) {
+        blogs.find(clickeduser,function(result1){
+            blogs.myblogs(clickeduser,function(result){
+                req.result= JSON.stringify(result);
+                //console.log("articles:", result);
+                req.result1=JSON.stringify(result1);
+                console.log(result1);
+                res.render('userprofile',{id: req.params.userid, name:result1.fullname, articles:result,follow: follow});
+                return;
+                
+            });
+            return;
+        });
+        
+        
+       
+            return;
+    }
+}
     res.redirect('/');
 });
 
