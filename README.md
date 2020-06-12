@@ -1,3 +1,4 @@
+Works on localhost:3000
 Kindly follow the queries to set up database.
 CREATE DATABASE www;
 use www;
